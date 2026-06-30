@@ -231,3 +231,44 @@ public class SetupController : ControllerBase
     public async Task<ActionResult<List<AnnouncementDto>>> GetAnnouncements() =>
         Ok(await _setup.GetAnnouncementsAsync(CompanyId));
 }
+
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
+public class ProfileController : ControllerBase
+{
+    private readonly ProfileService _profile;
+    public ProfileController(ProfileService profile) => _profile = profile;
+
+    private int UserId => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+    private int CompanyId => int.Parse(User.FindFirstValue("companyId")!);
+    private string Role => User.FindFirstValue(ClaimTypes.Role)!;
+
+    [HttpGet("me")]
+    public async Task<ActionResult<ProfileDto>> GetMyProfile()
+    {
+        var profile = await _profile.GetProfileAsync(UserId, CompanyId, Role);
+        return profile is null ? NotFound() : Ok(profile);
+    }
+
+    [HttpPut("me")]
+    public async Task<ActionResult<ProfileDto>> UpdateMyProfile([FromBody] UpdateProfileRequest request)
+    {
+        try
+        {
+            var profile = await _profile.UpdateProfileAsync(UserId, CompanyId, Role, request);
+            return profile is null ? NotFound() : Ok(profile);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPut("me/password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+    {
+        var ok = await _profile.ChangePasswordAsync(UserId, CompanyId, request);
+        return ok ? NoContent() : BadRequest(new { message = "Current password is incorrect or new password is invalid." });
+    }
+}

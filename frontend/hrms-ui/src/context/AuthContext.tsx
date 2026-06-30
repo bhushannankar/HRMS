@@ -5,6 +5,7 @@ interface AuthContextType {
   user: LoginResponse | null;
   login: (user: LoginResponse) => void;
   logout: () => void;
+  updateUser: (patch: Partial<LoginResponse>) => void;
   isAuthenticated: boolean;
 }
 
@@ -36,8 +37,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('hrms_user');
   };
 
+  const updateUser = (patch: Partial<LoginResponse>) => {
+    setUser((prev) => (prev ? { ...prev, ...patch } : prev));
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

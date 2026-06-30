@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getNavForRole, type NavItem } from '../config/navConfig';
 import './Sidebar.css';
@@ -121,7 +121,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
         ))}
       </nav>
       <div className="sidebar-footer">
-        <div className="user-info" title={collapsed ? user?.fullName : undefined}>
+        <Link to="/profile" className="user-info user-info-link" title={collapsed ? user?.fullName : 'My Profile'}>
           <div className="user-avatar">{initials}</div>
           {!collapsed && (
             <div className="user-details">
@@ -129,7 +129,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
               <span>{user?.email}</span>
             </div>
           )}
-        </div>
+        </Link>
         <button
           type="button"
           className="logout-btn"

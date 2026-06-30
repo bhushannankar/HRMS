@@ -18,7 +18,10 @@ export { adminNav };
 /** Manager panel — team oversight & approvals */
 export const managerNav: NavSection[] = [
   {
-    items: [{ to: '/dashboard', label: 'Dashboard', icon: '▣' }],
+    items: [
+      { to: '/dashboard', label: 'Dashboard', icon: '▣' },
+      { to: '/profile', label: 'My Profile', icon: '👤' },
+    ],
   },
   {
     title: 'My Team',
@@ -60,7 +63,10 @@ export const managerNav: NavSection[] = [
 /** Employee self-service panel */
 export const employeeNav: NavSection[] = [
   {
-    items: [{ to: '/dashboard', label: 'Dashboard', icon: '▣' }],
+    items: [
+      { to: '/dashboard', label: 'Dashboard', icon: '▣' },
+      { to: '/profile', label: 'My Profile', icon: '👤' },
+    ],
   },
   {
     title: 'My Work',
@@ -111,12 +117,12 @@ export function getNavForRole(role: string): NavSection[] {
 export const roleRoutes: Record<string, string[]> = {
   Admin: adminRoutes,
   Manager: [
-    '/dashboard', '/employees', '/attendance', '/leave', '/recruitment', '/training',
+    '/dashboard', '/profile', '/employees', '/attendance', '/leave', '/recruitment', '/training',
     '/performance', '/projects', '/events', '/expenses', '/travel', '/reports',
     '/core-hr',
   ],
   Employee: [
-    '/dashboard', '/attendance', '/leave', '/payroll', '/training', '/performance',
+    '/dashboard', '/profile', '/attendance', '/leave', '/payroll', '/training', '/performance',
     '/projects', '/events', '/expenses', '/travel', '/awards', '/documents',
     '/tickets', '/complaints', '/core-hr',
   ],

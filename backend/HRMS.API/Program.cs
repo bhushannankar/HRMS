@@ -14,6 +14,7 @@ builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<ProfileService>();
 builder.Services.AddScoped<AttendanceService>();
 builder.Services.AddScoped<LeaveService>();
 builder.Services.AddScoped<PayrollService>();

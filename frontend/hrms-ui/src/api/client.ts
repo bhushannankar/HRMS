@@ -74,6 +74,49 @@ export const setupApi = {
   getAnnouncements: () => api.get('/setup/announcements'),
 };
 
+export interface ProfileData {
+  userId: number;
+  employeeId: number | null;
+  username: string;
+  email: string;
+  role: string;
+  fullName: string;
+  companyName: string;
+  employeeCode: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  phone: string | null;
+  gender: string | null;
+  dateOfBirth: string | null;
+  department: string | null;
+  designation: string | null;
+  managerName: string | null;
+  shiftName: string | null;
+  joinDate: string | null;
+  employmentType: string | null;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  country: string | null;
+  profileImageUrl: string | null;
+  basicSalary: number | null;
+  lastLoginAt: string | null;
+}
+
+export const profileApi = {
+  getMe: () => api.get<ProfileData>('/profile/me'),
+  updateMe: (data: {
+    phone?: string;
+    address?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+    email?: string;
+  }) => api.put<ProfileData>('/profile/me', data),
+  changePassword: (currentPassword: string, newPassword: string) =>
+    api.put('/profile/me/password', { currentPassword, newPassword }),
+};
+
 export const recruitmentApi = {
   getJobs: () => api.get('/recruitment/jobs'),
   getApplications: (jobId?: number) => api.get('/recruitment/applications', { params: { jobId } }),

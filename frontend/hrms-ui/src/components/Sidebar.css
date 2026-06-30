@@ -1,5 +1,7 @@
 .sidebar {
   width: 260px;
+  height: 100vh;
+  max-height: 100vh;
   background: linear-gradient(180deg, #1e3a5f 0%, #0f2744 100%);
   color: #fff;
   display: flex;
@@ -8,6 +10,8 @@
   transition: width 0.25s ease;
   overflow: hidden;
   z-index: 100;
+  position: sticky;
+  top: 0;
 }
 
 .sidebar.collapsed {
@@ -21,6 +25,7 @@
   padding: 20px 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   min-height: 72px;
+  flex-shrink: 0;
 }
 
 .sidebar.collapsed .sidebar-brand {
@@ -71,10 +76,14 @@
 }
 
 .sidebar-nav {
-  flex: 1;
-  padding: 12px 10px 16px;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 12px 6px 16px 10px;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
 }
 
 .sidebar.collapsed .sidebar-nav {
@@ -179,10 +188,22 @@
 .sidebar-footer {
   padding: 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .sidebar.collapsed .sidebar-footer {
   padding: 12px 8px;
+}
+
+.user-info-link {
+  text-decoration: none;
+  color: inherit;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.user-info-link:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .user-info {
@@ -190,6 +211,7 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 12px;
+  padding: 4px;
 }
 
 .sidebar.collapsed .user-info {
@@ -252,10 +274,19 @@
 
 /* Scrollbar */
 .sidebar-nav::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px 0;
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
 }

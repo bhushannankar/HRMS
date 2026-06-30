@@ -3,7 +3,10 @@ import type { NavSection } from './navConfig';
 /** Full HRMMitra admin sidebar — https://demo.hrmmitra.in/admin/dashboard */
 export const adminNav: NavSection[] = [
   {
-    items: [{ to: '/dashboard', label: 'Dashboard', icon: '▣' }],
+    items: [
+      { to: '/dashboard', label: 'Dashboard', icon: '▣' },
+      { to: '/profile', label: 'My Profile', icon: '👤' },
+    ],
   },
   {
     items: [
@@ -226,7 +229,7 @@ export const adminNav: NavSection[] = [
 ];
 
 export const adminRoutes: string[] = [
-  '/dashboard', '/onboarding', '/employees', '/calendar',
+  '/dashboard', '/profile', '/onboarding', '/employees', '/calendar',
   '/attendance', '/leave', '/shifts', '/wfh', '/payroll', '/tax',
   '/core-hr', '/awards', '/complaints', '/recruitment', '/training',
   '/assets', '/documents', '/reports', '/events', '/tasks', '/projects',

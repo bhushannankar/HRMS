@@ -52,6 +52,7 @@ import { EmployeesReportPage, SalaryReportPage, PayrollReportPage, LeaveReportPa
 import { KpiPage, AppraisalPage, GoalsPage } from './pages/performance/PerformanceSubPages';
 import { MeetingsListPage } from './pages/events/EventsSubPages';
 import { TasksListPage } from './pages/tasks/TasksListPage';
+import Profile from './pages/Profile';
 import './index.css';
 
 const ph = (title: string, desc?: string) => <PlaceholderPage title={title} description={desc} />;
@@ -64,6 +65,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
 
             <Route path="/employees" element={<EmployeesLayout />}>
               <Route index element={<EmployeeList />} />

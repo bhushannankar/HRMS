@@ -123,3 +123,43 @@ public record PayslipDto(
 public record AnnouncementDto(int AnnouncementId, string Title, string Content, DateOnly StartDate, DateOnly? EndDate, DateTime CreatedAt);
 
 public record HolidayDto(int HolidayId, string HolidayName, DateOnly HolidayDate, string? Description);
+
+public record ProfileDto(
+    int UserId,
+    int? EmployeeId,
+    string Username,
+    string Email,
+    string Role,
+    string FullName,
+    string CompanyName,
+    string? EmployeeCode,
+    string? FirstName,
+    string? LastName,
+    string? Phone,
+    string? Gender,
+    DateOnly? DateOfBirth,
+    string? Department,
+    string? Designation,
+    string? ManagerName,
+    string? ShiftName,
+    DateOnly? JoinDate,
+    string? EmploymentType,
+    string? Address,
+    string? City,
+    string? State,
+    string? Country,
+    string? ProfileImageUrl,
+    decimal? BasicSalary,
+    DateTime? LastLoginAt
+);
+
+public record UpdateProfileRequest(
+    string? Phone,
+    string? Address,
+    string? City,
+    string? State,
+    string? Country,
+    string? Email
+);
+
+public record ChangePasswordRequest(string CurrentPassword, string NewPassword);
