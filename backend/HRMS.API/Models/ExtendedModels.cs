@@ -299,3 +299,63 @@ public class TravelRequest
     public DateTime CreatedAt { get; set; }
     public Employee Employee { get; set; } = null!;
 }
+
+public class ExitFormalityTemplate
+{
+    public int TemplateId { get; set; }
+    public int CompanyId { get; set; }
+    public string ItemName { get; set; } = string.Empty;
+    public string Category { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public int SortOrder { get; set; }
+    public bool IsMandatory { get; set; } = true;
+    public bool IsActive { get; set; } = true;
+    public Company Company { get; set; } = null!;
+}
+
+public class Resignation
+{
+    public int ResignationId { get; set; }
+    public int CompanyId { get; set; }
+    public int EmployeeId { get; set; }
+    public DateOnly ResignationDate { get; set; }
+    public DateOnly ProposedLastWorkingDate { get; set; }
+    public DateOnly? ActualLastWorkingDate { get; set; }
+    public string? Reason { get; set; }
+    public string ResignationType { get; set; } = "Voluntary";
+    public int? NoticePeriodDays { get; set; }
+    public string Status { get; set; } = "Submitted";
+    public string? ManagerRemarks { get; set; }
+    public int? ManagerActionBy { get; set; }
+    public DateTime? ManagerActionAt { get; set; }
+    public string? HrRemarks { get; set; }
+    public int? HrActionBy { get; set; }
+    public DateTime? HrActionAt { get; set; }
+    public bool ExitInterviewCompleted { get; set; }
+    public string? ExitInterviewNotes { get; set; }
+    public string? FnFStatus { get; set; }
+    public decimal? FnFAmount { get; set; }
+    public DateTime? FnFProcessedAt { get; set; }
+    public bool ClearanceCompleted { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public Company Company { get; set; } = null!;
+    public Employee Employee { get; set; } = null!;
+    public ICollection<ResignationExitFormality> ExitFormalities { get; set; } = [];
+}
+
+public class ResignationExitFormality
+{
+    public int FormalityId { get; set; }
+    public int ResignationId { get; set; }
+    public int? TemplateId { get; set; }
+    public string ItemName { get; set; } = string.Empty;
+    public string Category { get; set; } = string.Empty;
+    public bool IsMandatory { get; set; } = true;
+    public bool IsCompleted { get; set; }
+    public int? CompletedBy { get; set; }
+    public DateTime? CompletedAt { get; set; }
+    public string? Remarks { get; set; }
+    public Resignation Resignation { get; set; } = null!;
+    public ExitFormalityTemplate? Template { get; set; }
+}

@@ -45,6 +45,9 @@ public class HrmsDbContext : DbContext
     public DbSet<Complaint> Complaints => Set<Complaint>();
     public DbSet<ExpenseClaim> ExpenseClaims => Set<ExpenseClaim>();
     public DbSet<TravelRequest> TravelRequests => Set<TravelRequest>();
+    public DbSet<ExitFormalityTemplate> ExitFormalityTemplates => Set<ExitFormalityTemplate>();
+    public DbSet<Resignation> Resignations => Set<Resignation>();
+    public DbSet<ResignationExitFormality> ResignationExitFormalities => Set<ResignationExitFormality>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -188,5 +191,22 @@ public class HrmsDbContext : DbContext
             e.HasOne(x => x.Employee).WithMany().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.Restrict);
         });
         modelBuilder.Entity<TravelRequest>(e => { e.ToTable("TravelRequests"); e.HasKey(x => x.TravelId); });
+        modelBuilder.Entity<ExitFormalityTemplate>(e =>
+        {
+            e.ToTable("ExitFormalityTemplates");
+            e.HasKey(x => x.TemplateId);
+        });
+        modelBuilder.Entity<Resignation>(e =>
+        {
+            e.ToTable("Resignations");
+            e.HasKey(x => x.ResignationId);
+            e.HasOne(x => x.Employee).WithMany().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+        modelBuilder.Entity<ResignationExitFormality>(e =>
+        {
+            e.ToTable("ResignationExitFormalities");
+            e.HasKey(x => x.FormalityId);
+            e.HasOne(x => x.Resignation).WithMany(r => r.ExitFormalities).HasForeignKey(x => x.ResignationId);
+        });
     }
 }

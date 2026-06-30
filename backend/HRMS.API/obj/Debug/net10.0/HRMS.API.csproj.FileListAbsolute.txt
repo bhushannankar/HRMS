@@ -161,3 +161,4 @@ C:\Users\Dhruti\Documents\Uttishta\HRMS\backend\HRMS.API\obj\Debug\net10.0\refin
 C:\Users\Dhruti\Documents\Uttishta\HRMS\backend\HRMS.API\obj\Debug\net10.0\HRMS.API.pdb
 C:\Users\Dhruti\Documents\Uttishta\HRMS\backend\HRMS.API\obj\Debug\net10.0\HRMS.API.genruntimeconfig.cache
 C:\Users\Dhruti\Documents\Uttishta\HRMS\backend\HRMS.API\obj\Debug\net10.0\ref\HRMS.API.dll
+C:\Users\Dhruti\Documents\Uttishta\HRMS\backend\HRMS.API\obj\Debug\net10.0\HRMS.API.sourcelink.json

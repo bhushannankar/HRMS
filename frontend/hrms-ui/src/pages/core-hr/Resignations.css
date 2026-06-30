@@ -1,0 +1,262 @@
+.resignations-page .resign-toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.resign-filter {
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.resign-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .resign-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.resign-list-panel h2,
+.resign-detail-panel h2 {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+}
+
+.resign-sub {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.resign-meta {
+  color: #64748b;
+  margin: -8px 0 16px;
+  font-size: 0.9rem;
+}
+
+.resign-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.resign-info-grid > div {
+  background: #f8fafc;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.resign-info-grid span {
+  display: block;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.resign-reason {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.resign-reason p {
+  margin: 6px 0 0;
+  color: #475569;
+}
+
+.resign-actions {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.resign-actions h3 {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+}
+
+.resign-actions textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.resign-action-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.resign-form-panel {
+  margin-bottom: 20px;
+}
+
+.resign-form .form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.resign-error {
+  color: #dc2626;
+  margin-bottom: 12px;
+}
+
+.exit-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exit-item {
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.exit-item.done {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.exit-item-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: default;
+}
+
+.exit-cat {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.exit-mandatory {
+  display: inline-block;
+  margin-left: 6px;
+  color: #dc2626;
+  font-size: 0.72rem;
+}
+
+.exit-check {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #cbd5e1;
+  border-radius: 4px;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.exit-check.checked {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+}
+
+.exit-remarks {
+  margin: 6px 0 0 30px;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.resign-exit-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.resign-exit-section h3 {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+.resign-complete-banner {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+}
+
+.resign-complete-banner.success {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.resign-complete-banner p {
+  margin: 0 0 10px;
+  color: #334155;
+}
+
+.resign-done-tag {
+  color: #16a34a;
+  font-size: 0.9rem;
+  margin: 8px 0 0;
+}
+
+.badge.info {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge.rejected {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.badge.muted {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.badge.approved {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+tr.selected-row {
+  background: #f0f9ff;
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 0.82rem;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}

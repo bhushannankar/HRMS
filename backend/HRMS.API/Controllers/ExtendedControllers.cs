@@ -268,6 +268,118 @@ public record CreateComplaintRequest(int EmployeeId, string Subject, string? Des
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+public class ResignationsController : ControllerBase
+{
+    private readonly ResignationService _svc;
+    public ResignationsController(ResignationService svc) => _svc = svc;
+    private int CompanyId => int.Parse(User.FindFirstValue("companyId")!);
+    private int? EmployeeId => int.TryParse(User.FindFirstValue("employeeId"), out var id) ? id : null;
+    private string Role => User.FindFirstValue(System.Security.Claims.ClaimTypes.Role) ?? "Employee";
+
+    [HttpGet]
+    public async Task<ActionResult<List<ResignationListDto>>> GetAll([FromQuery] string? status)
+    {
+        if (!EmployeeId.HasValue && Role == "Employee") return BadRequest();
+        return Ok(await _svc.GetResignationsAsync(CompanyId, Role, EmployeeId, status));
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<ResignationDetailDto>> GetById(int id)
+    {
+        var item = await _svc.GetByIdAsync(CompanyId, id);
+        return item is null ? NotFound() : Ok(item);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ResignationDetailDto>> Create([FromBody] CreateResignationRequest req)
+    {
+        if (!EmployeeId.HasValue) return BadRequest();
+        try
+        {
+            return Ok(await _svc.CreateAsync(CompanyId, EmployeeId.Value, req));
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost("admin")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<ResignationDetailDto>> AdminCreate(
+        [FromQuery] int employeeId, [FromBody] CreateResignationRequest req)
+    {
+        if (!EmployeeId.HasValue) return BadRequest();
+        return Ok(await _svc.AdminCreateForEmployeeAsync(CompanyId, employeeId, req, EmployeeId.Value));
+    }
+
+    [HttpPut("{id:int}/manager-action")]
+    [Authorize(Roles = "Admin,Manager")]
+    public async Task<ActionResult<ResignationDetailDto>> ManagerAction(
+        int id, [FromQuery] bool approve, [FromBody] ResignationActionRequest req)
+    {
+        if (!EmployeeId.HasValue) return BadRequest();
+        var isAdmin = User.IsInRole("Admin");
+        var result = await _svc.ManagerActionAsync(CompanyId, id, EmployeeId.Value, approve, req.Remarks, isAdmin);
+        return result is null ? BadRequest() : Ok(result);
+    }
+
+    [HttpPut("{id:int}/hr-action")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<ResignationDetailDto>> HrAction(
+        int id, [FromQuery] bool approve, [FromBody] ResignationActionRequest req)
+    {
+        if (!EmployeeId.HasValue) return BadRequest();
+        var result = await _svc.HrActionAsync(CompanyId, id, EmployeeId.Value, approve, req.Remarks);
+        return result is null ? BadRequest() : Ok(result);
+    }
+
+    [HttpPut("{id:int}/exit-interview")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<ResignationDetailDto>> ExitInterview(int id, [FromBody] ExitInterviewRequest req)
+    {
+        var result = await _svc.UpdateExitInterviewAsync(CompanyId, id, req);
+        return result is null ? BadRequest() : Ok(result);
+    }
+
+    [HttpPut("{id:int}/formalities/{formalityId:int}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<ResignationDetailDto>> UpdateFormality(
+        int id, int formalityId, [FromBody] CompleteFormalityRequest req)
+    {
+        if (!EmployeeId.HasValue) return BadRequest();
+        var result = await _svc.UpdateFormalityAsync(CompanyId, id, formalityId, EmployeeId.Value, req);
+        return result is null ? BadRequest() : Ok(result);
+    }
+
+    [HttpPut("{id:int}/fnf")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<ResignationDetailDto>> UpdateFnF(int id, [FromBody] FnFRequest req)
+    {
+        var result = await _svc.UpdateFnFAsync(CompanyId, id, req);
+        return result is null ? BadRequest() : Ok(result);
+    }
+
+    [HttpPut("{id:int}/complete")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<ResignationDetailDto>> Complete(int id)
+    {
+        var result = await _svc.CompleteResignationAsync(CompanyId, id);
+        return result is null ? BadRequest() : Ok(result);
+    }
+
+    [HttpPut("{id:int}/withdraw")]
+    public async Task<IActionResult> Withdraw(int id)
+    {
+        if (!EmployeeId.HasValue) return BadRequest();
+        var ok = await _svc.WithdrawAsync(CompanyId, id, EmployeeId.Value);
+        return ok ? NoContent() : BadRequest();
+    }
+}
+
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
 public class ExpensesController : ControllerBase
 {
     private readonly HrOpsService _svc;

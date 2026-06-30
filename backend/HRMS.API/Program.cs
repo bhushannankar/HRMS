@@ -25,6 +25,7 @@ builder.Services.AddScoped<AssetService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<HrOpsService>();
+builder.Services.AddScoped<ResignationService>();
 builder.Services.AddScoped<ReportsService>();
 
 var jwtKey = builder.Configuration["Jwt:Key"]!;

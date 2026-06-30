@@ -57,6 +57,16 @@ public record CreateEmployeeRequest(
 
 public record DepartmentDto(int DepartmentId, string DepartmentName, string? Description, int EmployeeCount);
 public record DesignationDto(int DesignationId, string DesignationName, string? Description);
+public record OfficeShiftDto(int OfficeShiftId, string ShiftName, string StartTime, string EndTime, int GraceMinutes, int EmployeeCount);
+public record SystemRoleDto(int RoleId, string RoleName, string? Description, int UserCount);
+public record OrgChartNodeDto(
+    int EmployeeId,
+    string Name,
+    string? Designation,
+    string? Department,
+    int? ManagerId,
+    IReadOnlyList<OrgChartNodeDto> Reports
+);
 
 public record AttendanceDto(
     int AttendanceId,

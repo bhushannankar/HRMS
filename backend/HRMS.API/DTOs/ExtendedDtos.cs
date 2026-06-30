@@ -41,6 +41,34 @@ public record CreateExpenseRequest(string Category, decimal Amount, string? Desc
 public record TravelDto(int TravelId, string EmployeeName, string Destination, string? Purpose, DateOnly StartDate, DateOnly EndDate, decimal? EstimatedCost, string Status);
 public record CreateTravelRequest(string Destination, string? Purpose, DateOnly StartDate, DateOnly EndDate, decimal? EstimatedCost);
 
+// Resignations
+public record ResignationListDto(
+    int ResignationId, int EmployeeId, string EmployeeName, string EmployeeCode,
+    DateOnly ResignationDate, DateOnly ProposedLastWorkingDate, string ResignationType,
+    string Status, int? NoticePeriodDays, bool ClearanceCompleted, string? FnFStatus);
+
+public record ExitFormalityDto(
+    int FormalityId, string ItemName, string Category, bool IsMandatory,
+    bool IsCompleted, string? CompletedByName, DateTime? CompletedAt, string? Remarks);
+
+public record ResignationDetailDto(
+    int ResignationId, int EmployeeId, string EmployeeName, string EmployeeCode,
+    string? Department, string? Designation, DateOnly ResignationDate,
+    DateOnly ProposedLastWorkingDate, DateOnly? ActualLastWorkingDate, string? Reason,
+    string ResignationType, int? NoticePeriodDays, string Status,
+    string? ManagerRemarks, string? HrRemarks, bool ExitInterviewCompleted,
+    string? ExitInterviewNotes, string? FnFStatus, decimal? FnFAmount,
+    bool ClearanceCompleted, List<ExitFormalityDto> ExitFormalities);
+
+public record CreateResignationRequest(
+    DateOnly ResignationDate, DateOnly ProposedLastWorkingDate, string? Reason,
+    string ResignationType, int? NoticePeriodDays);
+
+public record ResignationActionRequest(string? Remarks);
+public record ExitInterviewRequest(string? Notes);
+public record FnFRequest(string FnFStatus, decimal? FnFAmount);
+public record CompleteFormalityRequest(bool IsCompleted, string? Remarks);
+
 // Reports
 public record ReportsSummaryDto(
     int OpenJobs, int PendingApplications, int ActiveTrainings, int OpenTickets,

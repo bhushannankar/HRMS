@@ -1,0 +1,266 @@
+.employees-module {
+  max-width: 1400px;
+}
+
+.employees-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+  padding: 8px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+}
+
+.employees-subnav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.employees-subnav-link:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.employees-subnav-link.active {
+  background: #2563eb;
+  color: #fff;
+}
+
+.employees-subnav-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .employees-subnav-label {
+    font-size: 0.8rem;
+  }
+
+  .employees-subnav-link {
+    padding: 8px 10px;
+  }
+}
+
+/* Org chart */
+.org-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 0;
+  overflow-x: auto;
+}
+
+.org-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.org-node {
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 18px;
+  text-align: center;
+  min-width: 140px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.org-node.root {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.org-node-name {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.9rem;
+}
+
+.org-node-role {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.org-node-dept {
+  font-size: 0.72rem;
+  color: #2563eb;
+  margin-top: 2px;
+}
+
+.org-children {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+  padding-top: 24px;
+  position: relative;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.org-children::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 24px;
+  background: #cbd5e1;
+  transform: translateX(-50%);
+}
+
+.org-branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.org-branch::before {
+  content: '';
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  width: 2px;
+  height: 24px;
+  background: #cbd5e1;
+}
+
+/* Import panel */
+.import-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 800px) {
+  .import-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.import-steps {
+  margin: 0;
+  padding-left: 20px;
+  color: #475569;
+  line-height: 1.8;
+}
+
+.policy-content {
+  line-height: 1.7;
+  color: #475569;
+}
+
+.policy-content h3 {
+  color: #1e293b;
+  margin: 20px 0 8px;
+}
+
+.policy-content h3:first-child {
+  margin-top: 0;
+}
+
+.employee-list-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-section-title {
+  margin: 20px 0 12px;
+  font-size: 0.9rem;
+  color: #334155;
+  font-weight: 600;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+.form-section-title:first-child {
+  margin-top: 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 16px;
+  z-index: 200;
+  overflow-y: auto;
+}
+
+.modal-dialog {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 720px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.modal-close:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.placeholder-panel .placeholder-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}

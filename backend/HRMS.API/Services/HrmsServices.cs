@@ -413,7 +413,7 @@ public class EmployeeService
 
     public EmployeeService(HrmsDbContext db) => _db = db;
 
-    public async Task<List<EmployeeDto>> GetAllAsync(int companyId, int? managerId = null)
+    public async Task<List<EmployeeDto>> GetAllAsync(int companyId, int? managerId = null, bool? isActive = true)
     {
         var query = _db.Employees
             .Include(e => e.User)
@@ -425,10 +425,46 @@ public class EmployeeService
         if (managerId.HasValue)
             query = query.Where(e => e.ManagerId == managerId || e.EmployeeId == managerId);
 
+        if (isActive.HasValue)
+            query = query.Where(e => e.IsActive == isActive.Value);
+
         return await query
             .OrderBy(e => e.FirstName)
             .Select(e => ToDto(e))
             .ToListAsync();
+    }
+
+    public async Task<List<OrgChartNodeDto>> GetOrgChartAsync(int companyId)
+    {
+        var employees = await _db.Employees
+            .Include(e => e.Department)
+            .Include(e => e.Designation)
+            .Where(e => e.CompanyId == companyId && e.IsActive)
+            .ToListAsync();
+
+        var byId = employees.ToDictionary(e => e.EmployeeId);
+        var children = employees
+            .Where(e => e.ManagerId.HasValue && byId.ContainsKey(e.ManagerId.Value))
+            .GroupBy(e => e.ManagerId!.Value)
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        OrgChartNodeDto Build(Employee e) => new(
+            e.EmployeeId,
+            $"{e.FirstName} {e.LastName}",
+            e.Designation?.DesignationName,
+            e.Department?.DepartmentName,
+            e.ManagerId,
+            children.TryGetValue(e.EmployeeId, out var reports)
+                ? reports.OrderBy(r => r.FirstName).Select(Build).ToList()
+                : []);
+
+        var roots = employees
+            .Where(e => !e.ManagerId.HasValue || !byId.ContainsKey(e.ManagerId.Value))
+            .OrderBy(e => e.FirstName)
+            .Select(Build)
+            .ToList();
+
+        return roots;
     }
 
     public async Task<EmployeeDto?> GetByIdAsync(int id, int companyId)
@@ -444,7 +480,33 @@ public class EmployeeService
 
     public async Task<EmployeeDto> CreateAsync(int companyId, CreateEmployeeRequest req)
     {
-        var role = await _db.Roles.FirstAsync(r => r.RoleName == req.RoleName);
+        if (await _db.Users.AnyAsync(u =>
+                u.CompanyId == companyId &&
+                (u.Username == req.Username || u.Email.ToLower() == req.Email.ToLower())))
+            throw new InvalidOperationException("Username or email already exists.");
+
+        if (await _db.Employees.AnyAsync(e => e.CompanyId == companyId && e.EmployeeCode == req.EmployeeCode))
+            throw new InvalidOperationException("Employee code already exists.");
+
+        var role = await _db.Roles.FirstOrDefaultAsync(r => r.RoleName == req.RoleName && r.IsActive)
+            ?? throw new InvalidOperationException("Invalid role selected.");
+
+        if (req.DepartmentId.HasValue && !await _db.Departments.AnyAsync(d =>
+                d.DepartmentId == req.DepartmentId && d.CompanyId == companyId && d.IsActive))
+            throw new InvalidOperationException("Invalid department selected.");
+
+        if (req.DesignationId.HasValue && !await _db.Designations.AnyAsync(d =>
+                d.DesignationId == req.DesignationId && d.CompanyId == companyId && d.IsActive))
+            throw new InvalidOperationException("Invalid designation selected.");
+
+        if (req.OfficeShiftId.HasValue && !await _db.OfficeShifts.AnyAsync(s =>
+                s.OfficeShiftId == req.OfficeShiftId && s.CompanyId == companyId && s.IsActive))
+            throw new InvalidOperationException("Invalid office shift selected.");
+
+        if (req.ManagerId.HasValue && !await _db.Employees.AnyAsync(e =>
+                e.EmployeeId == req.ManagerId && e.CompanyId == companyId && e.IsActive))
+            throw new InvalidOperationException("Invalid reporting manager selected.");
+
         var user = new User
         {
             CompanyId = companyId,
@@ -716,6 +778,22 @@ public class SetupService
     public async Task<List<DesignationDto>> GetDesignationsAsync(int companyId) =>
         await _db.Designations.Where(d => d.CompanyId == companyId && d.IsActive)
             .Select(d => new DesignationDto(d.DesignationId, d.DesignationName, d.Description))
+            .ToListAsync();
+
+    public async Task<List<OfficeShiftDto>> GetOfficeShiftsAsync(int companyId) =>
+        await _db.OfficeShifts.Where(s => s.CompanyId == companyId && s.IsActive)
+            .Select(s => new OfficeShiftDto(
+                s.OfficeShiftId,
+                s.ShiftName,
+                s.StartTime.ToString(@"hh\:mm"),
+                s.EndTime.ToString(@"hh\:mm"),
+                s.GraceMinutes,
+                s.Employees.Count(e => e.IsActive)))
+            .ToListAsync();
+
+    public async Task<List<SystemRoleDto>> GetRolesAsync() =>
+        await _db.Roles.Where(r => r.IsActive)
+            .Select(r => new SystemRoleDto(r.RoleId, r.RoleName, r.Description, r.Users.Count(u => u.IsActive)))
             .ToListAsync();
 
     public async Task<List<HolidayDto>> GetHolidaysAsync(int companyId) =>

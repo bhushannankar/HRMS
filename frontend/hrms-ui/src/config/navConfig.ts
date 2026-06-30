@@ -1,7 +1,10 @@
+import { adminNav, adminRoutes } from './adminMenuConfig';
+
 export interface NavItem {
   to: string;
   label: string;
   icon: string;
+  children?: NavItem[];
 }
 
 export interface NavSection {
@@ -9,69 +12,8 @@ export interface NavSection {
   items: NavItem[];
 }
 
-/** Admin / Company panel — full HRMMitra-style menu */
-export const adminNav: NavSection[] = [
-  {
-    items: [{ to: '/dashboard', label: 'Dashboard', icon: '▣' }],
-  },
-  {
-    title: 'Core HR',
-    items: [
-      { to: '/employees', label: 'Employees', icon: '👥' },
-      { to: '/recruitment', label: 'Recruitment (ATS)', icon: '📋' },
-      { to: '/holidays', label: 'Holidays', icon: '🎉' },
-    ],
-  },
-  {
-    title: 'Time & Attendance',
-    items: [
-      { to: '/attendance', label: 'Attendance', icon: '🕐' },
-      { to: '/leave', label: 'Leave', icon: '🏖️' },
-    ],
-  },
-  {
-    title: 'Payroll',
-    items: [{ to: '/payroll', label: 'Payroll', icon: '💰' }],
-  },
-  {
-    title: 'Talent Management',
-    items: [
-      { to: '/training', label: 'Training', icon: '🎓' },
-      { to: '/performance', label: 'Performance', icon: '⭐' },
-    ],
-  },
-  {
-    title: 'Project Management',
-    items: [{ to: '/projects', label: 'Projects & Tasks', icon: '📁' }],
-  },
-  {
-    title: 'Workplace',
-    items: [
-      { to: '/assets', label: 'Assets', icon: '💻' },
-      { to: '/events', label: 'Events & Meetings', icon: '📅' },
-    ],
-  },
-  {
-    title: 'Finance',
-    items: [
-      { to: '/expenses', label: 'Expense Claims', icon: '🧾' },
-      { to: '/travel', label: 'Travel', icon: '✈️' },
-    ],
-  },
-  {
-    title: 'HR Services',
-    items: [
-      { to: '/awards', label: 'Awards & Warnings', icon: '🏆' },
-      { to: '/documents', label: 'Official Documents', icon: '📄' },
-      { to: '/tickets', label: 'Support Tickets', icon: '🎫' },
-      { to: '/complaints', label: 'Complaints', icon: '📢' },
-    ],
-  },
-  {
-    title: 'Reports',
-    items: [{ to: '/reports', label: 'HR Reports', icon: '📈' }],
-  },
-];
+/** Admin / Company panel — full HRMMitra-style menu (see adminMenuConfig.ts) */
+export { adminNav };
 
 /** Manager panel — team oversight & approvals */
 export const managerNav: NavSection[] = [
@@ -106,6 +48,7 @@ export const managerNav: NavSection[] = [
     items: [
       { to: '/expenses', label: 'Expense Claims', icon: '🧾' },
       { to: '/travel', label: 'Travel Requests', icon: '✈️' },
+      { to: '/core-hr/resignations', label: 'Resignations', icon: '📤' },
     ],
   },
   {
@@ -144,6 +87,7 @@ export const employeeNav: NavSection[] = [
     items: [
       { to: '/travel', label: 'Travel Request', icon: '✈️' },
       { to: '/expenses', label: 'Expense Claim', icon: '🧾' },
+      { to: '/core-hr/resignations', label: 'Resignation', icon: '📤' },
     ],
   },
   {
@@ -165,23 +109,20 @@ export function getNavForRole(role: string): NavSection[] {
 
 /** Routes each role may access (blocks direct URL entry) */
 export const roleRoutes: Record<string, string[]> = {
-  Admin: [
-    '/dashboard', '/employees', '/attendance', '/leave', '/payroll', '/holidays',
-    '/recruitment', '/training', '/performance', '/assets', '/projects', '/events',
-    '/expenses', '/travel', '/awards', '/documents', '/tickets', '/complaints', '/reports',
-  ],
+  Admin: adminRoutes,
   Manager: [
     '/dashboard', '/employees', '/attendance', '/leave', '/recruitment', '/training',
     '/performance', '/projects', '/events', '/expenses', '/travel', '/reports',
+    '/core-hr',
   ],
   Employee: [
     '/dashboard', '/attendance', '/leave', '/payroll', '/training', '/performance',
     '/projects', '/events', '/expenses', '/travel', '/awards', '/documents',
-    '/tickets', '/complaints',
+    '/tickets', '/complaints', '/core-hr',
   ],
 };
 
 export function isRouteAllowed(role: string, path: string): boolean {
   const allowed = roleRoutes[role] ?? roleRoutes.Employee;
-  return allowed.includes(path);
+  return allowed.some((route) => path === route || path.startsWith(`${route}/`));
 }

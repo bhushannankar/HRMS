@@ -64,11 +64,16 @@ public class EmployeesController : ControllerBase
     private int? EmployeeId => int.TryParse(User.FindFirstValue("employeeId"), out var id) ? id : null;
 
     [HttpGet]
-    public async Task<ActionResult<List<EmployeeDto>>> GetAll()
+    public async Task<ActionResult<List<EmployeeDto>>> GetAll([FromQuery] bool? isActive)
     {
         int? managerFilter = Role == "Manager" ? EmployeeId : null;
-        return Ok(await _employees.GetAllAsync(CompanyId, managerFilter));
+        return Ok(await _employees.GetAllAsync(CompanyId, managerFilter, isActive));
     }
+
+    [HttpGet("org-chart")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<List<OrgChartNodeDto>>> GetOrgChart() =>
+        Ok(await _employees.GetOrgChartAsync(CompanyId));
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<EmployeeDto>> GetById(int id)
@@ -81,8 +86,15 @@ public class EmployeesController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<EmployeeDto>> Create([FromBody] CreateEmployeeRequest request)
     {
-        var emp = await _employees.CreateAsync(CompanyId, request);
-        return CreatedAtAction(nameof(GetById), new { id = emp.EmployeeId }, emp);
+        try
+        {
+            var emp = await _employees.CreateAsync(CompanyId, request);
+            return CreatedAtAction(nameof(GetById), new { id = emp.EmployeeId }, emp);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 }
 
@@ -202,6 +214,14 @@ public class SetupController : ControllerBase
     [HttpGet("designations")]
     public async Task<ActionResult<List<DesignationDto>>> GetDesignations() =>
         Ok(await _setup.GetDesignationsAsync(CompanyId));
+
+    [HttpGet("office-shifts")]
+    public async Task<ActionResult<List<OfficeShiftDto>>> GetOfficeShifts() =>
+        Ok(await _setup.GetOfficeShiftsAsync(CompanyId));
+
+    [HttpGet("roles")]
+    public async Task<ActionResult<List<SystemRoleDto>>> GetRoles() =>
+        Ok(await _setup.GetRolesAsync());
 
     [HttpGet("holidays")]
     public async Task<ActionResult<List<HolidayDto>>> GetHolidays() =>

@@ -33,8 +33,10 @@ export const dashboardApi = {
 };
 
 export const employeesApi = {
-  getAll: () => api.get('/employees'),
+  getAll: (isActive?: boolean) =>
+    api.get('/employees', { params: isActive !== undefined ? { isActive } : {} }),
   getById: (id: number) => api.get(`/employees/${id}`),
+  getOrgChart: () => api.get('/employees/org-chart'),
   create: (data: unknown) => api.post('/employees', data),
 };
 
@@ -66,6 +68,8 @@ export const payrollApi = {
 export const setupApi = {
   getDepartments: () => api.get('/setup/departments'),
   getDesignations: () => api.get('/setup/designations'),
+  getOfficeShifts: () => api.get('/setup/office-shifts'),
+  getRoles: () => api.get('/setup/roles'),
   getHolidays: () => api.get('/setup/holidays'),
   getAnnouncements: () => api.get('/setup/announcements'),
 };
@@ -129,6 +133,32 @@ export const travelApi = {
   approve: (id: number, approverId: number, approve = true) =>
     api.put(`/travel/${id}/approve?approverId=${approverId}&approve=${approve}`),
 };
+export const resignationsApi = {
+  getAll: (status?: string) => api.get('/resignations', { params: { status } }),
+  getById: (id: number) => api.get(`/resignations/${id}`),
+  create: (data: {
+    resignationDate: string;
+    proposedLastWorkingDate: string;
+    reason?: string;
+    resignationType?: string;
+    noticePeriodDays?: number;
+  }) => api.post('/resignations', data),
+  adminCreate: (employeeId: number, data: unknown) =>
+    api.post(`/resignations/admin?employeeId=${employeeId}`, data),
+  managerAction: (id: number, approve: boolean, remarks?: string) =>
+    api.put(`/resignations/${id}/manager-action?approve=${approve}`, { remarks }),
+  hrAction: (id: number, approve: boolean, remarks?: string) =>
+    api.put(`/resignations/${id}/hr-action?approve=${approve}`, { remarks }),
+  exitInterview: (id: number, notes?: string) =>
+    api.put(`/resignations/${id}/exit-interview`, { notes }),
+  updateFormality: (id: number, formalityId: number, isCompleted: boolean, remarks?: string) =>
+    api.put(`/resignations/${id}/formalities/${formalityId}`, { isCompleted, remarks }),
+  updateFnF: (id: number, fnfStatus: string, fnfAmount?: number) =>
+    api.put(`/resignations/${id}/fnf`, { fnfStatus, fnfAmount }),
+  complete: (id: number) => api.put(`/resignations/${id}/complete`, {}),
+  withdraw: (id: number) => api.put(`/resignations/${id}/withdraw`, {}),
+};
+
 export const reportsApi = { getSummary: () => api.get('/reports/summary') };
 
 export default api;
