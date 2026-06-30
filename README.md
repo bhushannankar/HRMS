@@ -40,8 +40,8 @@ HRMS/
 | Role | Username / Email | Password |
 |------|------------------|----------|
 | Admin | `Admin` | `123456` |
-| Manager | `Robins@yopmail.com` | `123456` |
-| Employee | `neerajk@yopmail.com` | `123456` |
+| Manager | `manager@uttishta.com` | `123456` |
+| Employee | `employee@uttishta.com` | `123456` |
 
 ## Prerequisites
 

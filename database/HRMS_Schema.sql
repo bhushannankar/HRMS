@@ -320,12 +320,12 @@ INSERT INTO dbo.Holidays (CompanyId, HolidayName, HolidayDate, Description) VALU
 -- Users
 INSERT INTO dbo.Users (CompanyId, RoleId, Username, Email, PasswordHash) VALUES
     (@CompanyId, 1, N'Admin', N'admin@hrms.local', @Hash123456),
-    (@CompanyId, 2, N'Robins', N'Robins@yopmail.com', @Hash123456),
-    (@CompanyId, 3, N'Neeraj', N'neerajk@yopmail.com', @Hash123456);
+    (@CompanyId, 2, N'manager@uttishta.com', N'manager@uttishta.com', @Hash123456),
+    (@CompanyId, 3, N'employee@uttishta.com', N'employee@uttishta.com', @Hash123456);
 
 DECLARE @AdminUserId INT = (SELECT UserId FROM dbo.Users WHERE Username = N'Admin');
-DECLARE @ManagerUserId INT = (SELECT UserId FROM dbo.Users WHERE Email = N'Robins@yopmail.com');
-DECLARE @EmployeeUserId INT = (SELECT UserId FROM dbo.Users WHERE Email = N'neerajk@yopmail.com');
+DECLARE @ManagerUserId INT = (SELECT UserId FROM dbo.Users WHERE Email = N'manager@uttishta.com');
+DECLARE @EmployeeUserId INT = (SELECT UserId FROM dbo.Users WHERE Email = N'employee@uttishta.com');
 
 -- Employees
 INSERT INTO dbo.Employees (CompanyId, UserId, EmployeeCode, FirstName, LastName, Gender, DepartmentId, DesignationId, OfficeShiftId, JoinDate, BasicSalary, Phone, EmploymentType)
@@ -377,5 +377,5 @@ FROM dbo.Employees WHERE CompanyId = @CompanyId;
 GO
 
 PRINT 'HRMS database schema and seed data created successfully.';
-PRINT 'Demo logins - Admin: Admin / 123456 | Manager: Robins@yopmail.com / 123456 | Employee: neerajk@yopmail.com / 123456';
+PRINT 'Demo logins - Admin: Admin / 123456 | Manager: manager@uttishta.com / 123456 | Employee: employee@uttishta.com / 123456';
 GO

@@ -64,8 +64,8 @@ export default function Login() {
         <div className="demo-credentials">
           <p><strong>Demo Accounts:</strong></p>
           <p>Admin: Admin / 123456</p>
-          <p>Manager: Robins@yopmail.com / 123456</p>
-          <p>Employee: neerajk@yopmail.com / 123456</p>
+          <p>Manager: manager@uttishta.com / 123456</p>
+          <p>Employee: employee@uttishta.com / 123456</p>
         </div>
       </div>
     </div>
